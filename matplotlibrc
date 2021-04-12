@@ -1,0 +1,5 @@
+font.family: FuturaEFCE-DemiBold
+font.size: 14
+mathtext.fontset: custom
+mathtext.rm: FuturaEFCE\-DemiBold
+svg.fonttype: none

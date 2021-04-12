@@ -1,0 +1,6 @@
+venv
+run
+.vscode
+.octaverc
+/*.s1p
+/*.svg
