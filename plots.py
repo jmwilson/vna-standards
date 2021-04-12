@@ -32,7 +32,6 @@ def read_s1p_file(fd):
 def compare_plot(freq, s11, freq_meas, s11_meas):
 	plt.style.use('dark_background')
 	fig, ax = plt.subplots(tight_layout=True)
-	ax.set_title("OPEN STANDARD $\mathrm{S_{11}}$")
 	fig.set_size_inches(12,8)
 	fig.set_dpi(100)
 	h1, = ax.semilogx(freq, 20*numpy.log10(numpy.abs(s11)),
@@ -61,6 +60,7 @@ mask = freq_meas <= 3e9
 fig = compare_plot(freq_sim, s11_sim, freq_meas[mask], s11_meas[mask])
 ax, *_ = fig.get_axes()
 ax.set_ylim([-1,.1])
+ax.set_title("OPEN STANDARD $\mathrm{S_{11}}$")
 fig.savefig("open-s11.svg", format="svg")
 
 with open(os.path.join(sim_path, 'short.s1p')) as fd:
@@ -71,6 +71,7 @@ mask = freq_meas <= 3e9
 fig = compare_plot(freq_sim, s11_sim, freq_meas[mask], s11_meas[mask])
 ax, *_ = fig.get_axes()
 ax.set_ylim([-1,.1])
+ax.set_title("SHORT STANDARD $\mathrm{S_{11}}$")
 fig.savefig("short-s11.svg", format="svg")
 
 with open(os.path.join(sim_path, 'load.s1p')) as fd:
@@ -79,4 +80,6 @@ with open(os.path.join(meas_path, 'load.s1p')) as fd:
     freq_meas, s11_meas = read_s1p_file(fd)
 mask = freq_meas <= 3e9
 fig = compare_plot(freq_sim, s11_sim, freq_meas[mask], s11_meas[mask])
+ax, *_ = fig.get_axes()
+ax.set_title("LOAD STANDARD $\mathrm{S_{11}}$")
 fig.savefig("load-s11.svg", format="svg")
