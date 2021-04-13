@@ -9,7 +9,7 @@ OpenEMS simulation of VNA calibration standards. Read about this project at http
 
 ## Repository structure
 
-* `data_8714ES`: S11 measurements of the standards on a 3 GHz Keysight 8714ES VNA
-* `data_N5222B`: S11 measurements of the standards on a 26.5 GHz Keysight N52222B VNA. At the time, only the 6 GHz calibration kit was available, so the data only extends to 6 GHz.
+* `data_8714ES`: S11 measurements of the standards on a 3 GHz Keysight 8714ES VNA.
+* `data_N5222B`: S11 measurements of the standards on a 26.5 GHz Keysight N5222B VNA. At the time, only the 6 GHz calibration kit was available, so the data only extends to 6 GHz.
 * `docs`: PDF datasheets for the Rosenberger connector used. The nominal dimension values are used in `common_setup.m`.
 * `Fitting.SLDPRT`/`Fitting.STL`: the Solidworks part for the fitting cap used to enclose the SMA connectors, and a STL file appropriate for 3D printing. The opening is sized to nominal connector dimensions (.250") and may require adjustments for manufacturing and fitting.
