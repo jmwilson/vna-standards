@@ -4,7 +4,7 @@ OpenEMS simulation of VNA calibration standards. Read about this project at http
 ## Setup and run directions
 
 1. Download octave (or use Matlab) and OpenEMS. Ensure OpenEMS is on the octave/Matlab's path using `addpath`.
-1. Run simulations for the standards via `octave {open,short,load}_standard.m`. The FDTD simulation will begin after the geometry preview window is closed. Generally, the simulations will not reach the end criterion of -50 dB in any reasonable amount of time. It is acceptable to terminate the simulation once the energy level has noticeably stopped decaying by running `touch run/ABORT`. The presence of this file will stop OpenEMS.
+1. Run simulations for the standards via `octave {open,short,load}_standard.m`. The FDTD simulation will begin after the geometry preview window is closed. Generally, the simulations will not reach the end criterion of −50 dB in any reasonable amount of time. It is acceptable to terminate the simulation once the energy level has noticeably stopped decaying by running `touch run/ABORT`. The presence of this file will stop OpenEMS.
 1. Generate comparison S11 charts using `python plots.py`. This script requires `numpy` and `matplotlib`.
 
 ## Repository structure

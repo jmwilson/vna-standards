@@ -3,6 +3,8 @@ import matplotlib
 import numpy
 import os
 
+from matplotlib.ticker import EngFormatter
+
 # Quick and dirty Touchstone file reader for S1P
 def read_s1p_file(fd):
     lines = filter(lambda s: not s.startswith('!'), fd.readlines())
@@ -30,56 +32,56 @@ def read_s1p_file(fd):
 
 # Compare magnitude and phase of S11 on same axes
 def compare_plot(freq, s11, freq_meas, s11_meas):
-	plt.style.use('dark_background')
-	fig, ax = plt.subplots(tight_layout=True)
-	fig.set_size_inches(12,8)
-	fig.set_dpi(100)
-	h1, = ax.semilogx(freq, 20*numpy.log10(numpy.abs(s11)),
+    plt.figure(figsize=(10,6))
+    ax = plt.axes()
+    h1, = plt.plot(freq, 20*numpy.log10(numpy.abs(s11)),
         label="model (mag.)")
-	h1_cal, = ax.semilogx(freq_meas, 20*numpy.log10(numpy.abs(s11_meas)),
+    h2, = plt.plot(freq_meas, 20*numpy.log10(numpy.abs(s11_meas)),
         label="measured (mag.)", color="coral")
-	ax.set_xlabel("FREQUENCY (Hz)")
-	ax.set_ylabel("MAGNITUDE (dB)")
-	phase_ax = ax.twinx()
-	phase_ax.set_ylabel("PHASE (°)")
-	h2, = phase_ax.semilogx(freq, numpy.angle(s11, deg=True),
+    plt.xscale('log')
+    ax.xaxis.set_major_formatter(EngFormatter(unit='Hz'))
+    plt.xlabel('Frequency')
+    plt.ylabel('$|S_{11}|$ (dB)')
+    plt.grid(axis='x', which='both')
+    plt.twinx()
+    plt.ylabel("Phase (°)")
+    h3, = plt.plot(freq, numpy.angle(s11, deg=True),
         linestyle="dashed", label="model (phase)")
-	h2_cal, = phase_ax.semilogx(freq_meas, numpy.angle(s11_meas, deg=True),
+    h4, = plt.plot(freq_meas, numpy.angle(s11_meas, deg=True),
         linestyle="dashed", label="measured (phase)", color="coral")
-	plt.legend(handles=[h1, h2, h1_cal, h2_cal], loc="lower left")
-	return fig
+    plt.legend(handles=[h1, h2, h3, h4], loc="lower left")
 
 sim_path = ''
-meas_path = 'data_N5222B'
+meas_path = 'data_8714ES'
 
 with open(os.path.join(sim_path, 'open.s1p')) as fd:
     freq_sim, s11_sim = read_s1p_file(fd)
 with open(os.path.join(meas_path, 'open.s1p')) as fd:
     freq_meas, s11_meas = read_s1p_file(fd)
 mask = freq_meas <= 3e9
-fig = compare_plot(freq_sim, s11_sim, freq_meas[mask], s11_meas[mask])
-ax, *_ = fig.get_axes()
-ax.set_ylim([-1,.1])
-ax.set_title("OPEN STANDARD $\mathrm{S_{11}}$")
-fig.savefig("open-s11.svg", format="svg")
+compare_plot(freq_sim, s11_sim, freq_meas[mask], s11_meas[mask])
+plt.gcf().axes[0].set_ylim([-1, .1])
+plt.title("Open standard")
+plt.tight_layout()
+plt.savefig("open-s11.svg", format="svg")
 
 with open(os.path.join(sim_path, 'short.s1p')) as fd:
     freq_sim, s11_sim = read_s1p_file(fd)
 with open(os.path.join(meas_path, 'short.s1p')) as fd:
     freq_meas, s11_meas = read_s1p_file(fd)
 mask = freq_meas <= 3e9
-fig = compare_plot(freq_sim, s11_sim, freq_meas[mask], s11_meas[mask])
-ax, *_ = fig.get_axes()
-ax.set_ylim([-1,.1])
-ax.set_title("SHORT STANDARD $\mathrm{S_{11}}$")
-fig.savefig("short-s11.svg", format="svg")
+compare_plot(freq_sim, s11_sim, freq_meas[mask], s11_meas[mask])
+plt.gcf().axes[0].set_ylim([-1, .1])
+plt.title("Short standard")
+plt.tight_layout()
+plt.savefig("short-s11.svg", format="svg")
 
 with open(os.path.join(sim_path, 'load.s1p')) as fd:
     freq_sim, s11_sim = read_s1p_file(fd)
 with open(os.path.join(meas_path, 'load.s1p')) as fd:
     freq_meas, s11_meas = read_s1p_file(fd)
 mask = freq_meas <= 3e9
-fig = compare_plot(freq_sim, s11_sim, freq_meas[mask], s11_meas[mask])
-ax, *_ = fig.get_axes()
-ax.set_title("LOAD STANDARD $\mathrm{S_{11}}$")
-fig.savefig("load-s11.svg", format="svg")
+compare_plot(freq_sim, s11_sim, freq_meas[mask], s11_meas[mask])
+plt.title("Load standard")
+plt.tight_layout()
+plt.savefig("load-s11.svg", format="svg")
